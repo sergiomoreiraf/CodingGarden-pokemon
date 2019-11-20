@@ -1,7 +1,8 @@
 {
   "name": "poke-search",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "watch": "webpack --watch --progress"
   },
   "license": "MIT",
   "private": true,
