@@ -1,15 +1,12 @@
 $body-color: white;
 $background-color: rgb(32, 32, 32);
-$board-color: gainsboro;
+$board-color: whitesmoke;
 
 /* Reset */
 * {
   box-sizing: border-box;
-}
-html,
-body,
-h1 {
-  margin: 0 0;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -17,7 +14,7 @@ body {
   width: 100vw;
   color: $body-color;
   background-color: $background-color;
-  font-size: calc(16px + 1vw);
+  font-size: calc(12px + 0.5vw);
   line-height: calc(1.1em + 0.5vw);
   font-family: 'Source Sans Pro', sans-serif;
 }
@@ -32,7 +29,7 @@ h2 {
   display: grid;
   height: 100%;
   grid-template-columns: auto;
-  grid-template-rows: 120px 1fr 150px 80px;
+  grid-template-rows: 80px 1fr 140px 40px;
   grid-template-areas:
     'header'
     'board'
@@ -47,8 +44,8 @@ h2 {
   #board {
     grid-area: board;
     display: grid;
-    grid-template-columns: repeat(5, 30px);
-    grid-template-rows: repeat(5, 30px);
+    grid-template-columns: repeat(7, 42px);
+    grid-template-rows: repeat(7, 42px);
     gap: 1px;
     div {
       background-color: $board-color;
@@ -59,5 +56,24 @@ h2 {
   }
   footer {
     grid-area: footer;
+  }
+}
+
+.p {
+  width: 40px;
+  height: 40px;
+  background-repeat: no-repeat;
+  background-image: url('/assets/sprite_f1.png');
+  @for $x from 1 through 28 {
+    @for $y from 1 through 18 {
+      @if (($x + (($y - 1) * 28)) <= 492) {
+        &.n#{($x + (($y - 1) * 28))} {
+          background-position: -40px * ($x - 1) -40px * ($y - 1);
+          &:hover {
+            background-image: url('/assets/sprite_f2.png');
+          }
+        }
+      }
+    }
   }
 }
