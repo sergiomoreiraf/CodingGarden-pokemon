@@ -2,10 +2,7 @@ import '../sass/style.scss';
 import '../view';
 
 import { onLoadDocument, generateRandomNumbers } from './util';
-
-// Hold the answer for pokemon's name
-// data will be fetch from https://pokeapi.co/
-let pokemons: any = {};
+import * as storage from './storage';
 
 const init = async () => {
   //- Fetch pokemon names
@@ -13,12 +10,14 @@ const init = async () => {
   await fetch(url)
     .then(res => res.json())
     .then(data => {
+      let pokemons: any = {};
       data.results.map((pokemon: any) => {
         const _ = pokemon.url.split('/');
         _.pop();
         const id = _.pop();
         pokemons[id] = pokemon.name;
       });
+      storage.set(storage.items.pokemons, pokemons);
     })
     .catch(err => {
       console.debug(err);
@@ -33,5 +32,7 @@ const init = async () => {
     divOut.appendChild(divIn);
     board.appendChild(divOut);
   }
+  //- Start timer
+  //interval = setTimeout(() => {}, 1000);
 };
 onLoadDocument(init);
