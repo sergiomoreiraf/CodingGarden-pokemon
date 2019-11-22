@@ -47,9 +47,6 @@ h2 {
     grid-template-columns: repeat(7, 42px);
     grid-template-rows: repeat(7, 42px);
     gap: 1px;
-    div {
-      background-color: $board-color;
-    }
   }
   #play {
     grid-area: play;
@@ -59,7 +56,8 @@ h2 {
   }
 }
 
-.p {
+moving-pokemon {
+  background-color: $board-color;
   width: 40px;
   height: 40px;
   background-repeat: no-repeat;

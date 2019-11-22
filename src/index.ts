@@ -3,10 +3,11 @@ import '../view';
 
 import { onLoadDocument, generateRandomNumbers } from './util';
 import * as storage from './storage';
+import { MovingPokemon } from '../view/moving-pokemon/moving-pokemon';
 
 const init = async () => {
   //- Fetch pokemon names
-  const url = `https://pokeapi.co/api/v2/pokemon/?limit=100`;
+  const url = `https://pokeapi.co/api/v2/pokemon/?limit=10`;
   await fetch(url)
     .then(res => res.json())
     .then(data => {
@@ -20,17 +21,14 @@ const init = async () => {
       storage.set(storage.items.pokemons, pokemons);
     })
     .catch(err => {
-      console.debug(err);
+      console.error(err);
     });
   //- Create 49 divs inside board, each with a pokemon
   const selectPokemons = generateRandomNumbers(1, 100, 49);
   const board = document.getElementById('board')!;
   for (let i = 0; i < 49; i++) {
-    const divOut = document.createElement('div');
-    const divIn = document.createElement('div');
-    divIn.className = 'p n' + selectPokemons[i];
-    divOut.appendChild(divIn);
-    board.appendChild(divOut);
+    const pokemon = new MovingPokemon(selectPokemons[i]);
+    board.appendChild(pokemon);
   }
   //- Start timer
   //interval = setTimeout(() => {}, 1000);
