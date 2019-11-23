@@ -1,38 +1,29 @@
 # CJ gotta catch 'em all!
 
-![Dancing Pokemons - Pic from a early release](assets/dancing-pokemon.gif).
+After years of coding, CJ decided to abandon everything and start following his dream: to become the best Pokemon trainer ever!
 
-[Coding Garden](https://www.youtube.com/channel/UCLNgu_OupwoeESgtab33CCw) is a youtube channel that teaches people on how to code with JavaScript. The host of this channel is a nice guy know as CJ.
+60 secs. This is all the time you have to click on moving Pokemons and name it correctly. If you success, CJ will catch this Pokemon. If you fail, no candy for you.
 
-One day, on a live stream, he gave a challenge to his subscribers: build a simple website that fetch some data from a public API that followed [some rules](https://github.com/CodingGarden/seedling-school-01-frontend-project).
+## What is your motivation for creating this project?
 
-The goal of this challenge was to teach the basics on web development. Well... I have 21 years of experience on web dev and I wanted to participate so CJ would do a nice live review on my code and that would make me very happy! :)
+The best resume one can have is an online portfolio. I think this idea implemented with some flavouring will be fun and a nice personal accomplishment.
 
-Therefore I decided to set up some crazy Stretch Goals on my project, but nothing too deep. The focus is to let others learn from it.
+## How will users interact with your web site?
 
-Besides it's being fun to develop, this will be a nice add on to my online portfolio.
+A grid of moving Pokemons. Click on one of them and be sure to type the correct name of it.
 
-# What is required
+## What 3rd Party API(s) will you integrate with?
 
-A good editor. I recommend [VsCode](https://code.visualstudio.com/).
+https://pokeapi.co/docs/v2.html
 
-NPM installed. Take a look on [NVM - Node Version Manager](https://github.com/nvm-sh/nvm).
+## Tech Stack
 
-# How to build and run
+- Only plain css (actually sass).
+- No 3rd party libraries, but only the necessary to compile Typescript.
 
-1. Run '**npm install**' to download the dev requirements.
+## Will you try to implement any stretch features?
 
-1. Run '**npm run build**' or '**npm run watch**'. Both will transpile Typescript to a **./dist** folder.
-
-1. Run **LiveServer** (it's a extension from VsCode that hooks a live server on port 5500 and for the root folder of the project).
-
-# The state of the project
-
-It's under development. I estimate it be 40% completed.
-
-# Architectural thoughts
-
-As a general rule, only plain Javascript was allowed, so no Framework or library was used unless what's required to transpile Typescript and Sass.
+What is being added:
 
 - Build process with [Webpack](https://webpack.js.org/) to transpile [Typescript](https://www.typescriptlang.org/) code.
   - This must provide both build process and live transpile on change detection.
@@ -72,6 +63,15 @@ As a general rule, only plain Javascript was allowed, so no Framework or library
   - This means that the state is shared between subscription as such on Observer Pattern. For example, whatever component/class that has a shareable state provides a subscription so others can be notified on this state change.
 - Mix between an OO approach and functional programming.
 
-# Last but not least
+What I may add:
 
-If you liked this repo, give it a star! :)
+- UI animation (will try without adding a lib).
+- PWA.
+
+## What will be your process?
+
+Although motivated, I have to split my focus between this project, my work, family, other projects and a specialization. So I may not be able to finish it on 1.5 week.
+
+As this is not a complex project, I decided to not use a project management.
+
+For UX/UI I made some draws and notes, then plan to sketch up on HTML later.
