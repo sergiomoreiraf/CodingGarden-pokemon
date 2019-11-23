@@ -1,7 +1,7 @@
 /**
  * A type that defines a function that expects some data of type T and returns nothing
  */
-type SubscriberFn<T> = (data: T) => void;
+type SubscriberFn<T> = (data?: T) => void;
 
 /**
  * A typescript implementation of Observer Pattern.
@@ -15,6 +15,10 @@ export class Observable<T> {
 
   unsubscribe(s: SubscriberFn<T>) {
     this.subscribers = this.subscribers.filter(subscriber => subscriber !== s);
+  }
+
+  unsubscribeAll() {
+    this.subscribers = [];
   }
 
   notify(data: T) {
