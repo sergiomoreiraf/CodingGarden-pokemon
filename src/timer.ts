@@ -1,7 +1,7 @@
 // Controls the timer countdown and provides subscriptions for timer tick (observer pattern).
 
-import * as storage from './storage';
-import { Observable } from './observable';
+import * as storage from './lib/storage';
+import { Observable } from './lib/observable';
 
 // Controls the timer event loop
 let timer: number;

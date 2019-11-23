@@ -5,6 +5,8 @@ let storage: any = {};
 
 /**
  * Enum that contains the possible variables.
+ *
+ * TODO: this should not be here. Somehow this must be dynamic fetched.
  */
 export enum items {
   // controls the remaining time

@@ -1,8 +1,8 @@
 import '../sass/style.scss';
 import '../view';
 
-import { onLoadDocument, generateRandomNumbers } from './util';
-import * as storage from './storage';
+import { onLoadDocument, generateRandomNumbers } from './lib/util';
+import * as storage from './lib/storage';
 import { MovingPokemon } from '../view/moving-pokemon/moving-pokemon';
 
 const init = async () => {
