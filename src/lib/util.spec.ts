@@ -8,6 +8,9 @@ describe('Util functions', () => {
     it('should return empty array if howMany > from - to', () => {
       expect(generateRandomNumbers(0, 1, 3)).toStrictEqual([]);
     });
+    it('should return empty array if init size > howMany', () => {
+      expect(generateRandomNumbers(0, 1, 1, [1, 2])).toStrictEqual([]);
+    });
     it('should return expected array 1', () => {
       let ret = generateRandomNumbers(0, 3, 4);
       ret.sort((a, b) => a - b);
@@ -25,6 +28,7 @@ describe('Util functions', () => {
       expect(ret[0]).toBeLessThanOrEqual(5);
       expect(ret[1]).toBeGreaterThanOrEqual(2);
       expect(ret[1]).toBeLessThanOrEqual(5);
+      expect(ret[0]).not.toBe(ret[1]);
     });
     it('should return expected array 4', () => {
       let ret = generateRandomNumbers(1, 3, 2, [1, 2]);

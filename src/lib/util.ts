@@ -14,16 +14,30 @@ export function generateRandomNumbers(
   howMany: number,
   init: number[] = []
 ): number[] {
-  if (to < from || howMany > to - from + 1) {
+  if (to < from || howMany > to - from + 1 || init.length > howMany) {
     return [];
   }
+
   let set = new Set<number>();
-  init.map(x => set.add(x));
-  // naive code: should use different approach if howMany is greater than (to-from)/2
-  while (set.size < howMany) {
-    const random = Math.floor(Math.random() * (to - from + 1)) + from;
-    set.add(random);
+  let ret: number[];
+
+  if (howMany + init.length <= (to - from) / 2) {
+    init.map(x => set.add(x));
+    while (set.size < howMany) {
+      const random = Math.floor(Math.random() * (to - from + 1)) + from;
+      set.add(random);
+    }
+    ret = [...set];
+  } else {
+    for (let i = from; i <= to; i++) {
+      set.add(i);
+    }
+    while (set.size > howMany) {
+      const random = Math.floor(Math.random() * (to - from + 1)) + from;
+      if (init.filter(x => x === random).length === 0) set.delete(random);
+    }
+    ret = [...set];
   }
-  let ret = [...set];
+
   return ret;
 }
