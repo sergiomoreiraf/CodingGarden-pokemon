@@ -1,8 +1,10 @@
 import { CustomWebComponent } from './custom-webcomp';
 import { MovingPokemon } from './moving-pokemon/moving-pokemon';
+import { PlayButton } from './play-button/play-button';
 
 // For every web component we create, we must initialize it. This is handled by the init().
 init('moving-pokemon', MovingPokemon);
+init('play-button', PlayButton);
 
 /**
  * Type that describes a class that extends another class.

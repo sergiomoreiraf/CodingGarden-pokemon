@@ -61,13 +61,15 @@ moving-pokemon {
   width: 40px;
   height: 40px;
   background-repeat: no-repeat;
-  background-image: url('/assets/sprite_f1.png');
   @for $x from 1 through 28 {
     @for $y from 1 through 18 {
       @if (($x + (($y - 1) * 28)) <= 492) {
         &.n#{($x + (($y - 1) * 28))} {
           background-position: -40px * ($x - 1) -40px * ($y - 1);
-          &:hover {
+          &.f0 {
+            background-image: url('/assets/sprite_f1.png');
+          }
+          &.f1 {
             background-image: url('/assets/sprite_f2.png');
           }
         }

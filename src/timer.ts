@@ -1,10 +1,11 @@
 // Controls the timer countdown and provides subscriptions for timer tick (observer pattern).
 
-import * as storage from './lib/storage';
 import { Observable } from './lib/observable';
 
 // Controls the timer event loop
-let timer: number;
+let handler: number;
+
+let timer = 60;
 
 /**
  * Holds observers to get notified when times ticks for a sec
@@ -15,27 +16,25 @@ export const timerObserver = new Observable<number>();
  * Reset timer to 1 minute
  */
 export function resetTimer() {
-  storage.set(storage.items.secs, 60);
+  timer = 60;
 }
 
 /**
  * Resume (start) timer
  */
 export function startTimer() {
-  if (!timer) {
-    timer = setInterval(timerTick, 1000);
+  if (!handler) {
+    handler = setInterval(timerTick, 1000);
   }
 }
 
 // What happens when 1 sec tick
 function timerTick() {
-  let secs = storage.get(storage.items.secs);
-  secs--;
-  storage.set(storage.items.secs, secs);
-  timerObserver.notify(secs);
-  if (secs <= 0) {
+  console.log(timer);
+  timer--;
+  timerObserver.notify(timer);
+  if (timer <= 0) {
     pauseTimer();
-    resetTimer();
   }
 }
 
@@ -43,7 +42,7 @@ function timerTick() {
  * Pause the timer.
  */
 export function pauseTimer() {
-  if (timer) {
-    clearInterval(timer);
+  if (handler) {
+    clearInterval(handler);
   }
 }
