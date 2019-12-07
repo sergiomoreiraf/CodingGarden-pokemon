@@ -24,14 +24,11 @@ export class MovingPokemon extends CustomWebComponent {
   }
 
   attributeChangedCallback(attrName: string, oldVal: any, newVal: any) {
-    this.classList.remove('f' + oldVal);
-    this.classList.add('f' + newVal);
+    newVal === '1' ? this.classList.add('f2') : this.classList.remove('f2');
   }
 
   postConstruct(): void {
-    this.classList.add('p');
     this.classList.add('n' + this.nr);
-    this.classList.add('f' + this.frame);
   }
 
   preDestroy(): void {}
