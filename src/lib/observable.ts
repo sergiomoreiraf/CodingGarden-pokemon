@@ -1,5 +1,5 @@
 /**
- * A type that defines a function that expects some data of type T and returns nothing
+ * A type that defines a function that may have an arg of type T and returns nothing
  */
 type SubscriberFn<T> = (data?: T) => void;
 
