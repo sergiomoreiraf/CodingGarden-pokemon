@@ -3,7 +3,7 @@
 import { Observable } from './lib';
 
 // Controls the timer event loop
-let handler: number | null;
+let handler: NodeJS.Timeout | null;
 
 let timer = 60;
 
