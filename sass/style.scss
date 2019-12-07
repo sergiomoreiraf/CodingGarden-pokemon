@@ -66,10 +66,10 @@ moving-pokemon {
       @if (($x + (($y - 1) * 28)) <= 492) {
         &.n#{($x + (($y - 1) * 28))} {
           background-position: -40px * ($x - 1) -40px * ($y - 1);
-          background-image: url('/assets/sprite_f1.png');
+          background-image: url('../assets/sprite_f1.png');
           // second frame
           &.f2 {
-            background-image: url('/assets/sprite_f2.png');
+            background-image: url('../assets/sprite_f2.png');
           }
         }
       }

@@ -1,7 +1,7 @@
 /**
  * Wrapper that helps to define a web component.
  *
- * The "templateId" on the constructor must match the "id" of the corresponding web component <template> html tag as such: "<templateId>-template"
+ * The "templateId" on the constructor must match the "id" of the corresponding web component <template> html tag such as: "<templateId>-template"
  *
  * @export
  * @class CustomWebComponent
