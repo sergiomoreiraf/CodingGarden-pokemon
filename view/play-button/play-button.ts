@@ -10,6 +10,10 @@ export class PlayButton extends CustomWebComponent {
     super('play-button');
   }
 
+  show() {
+    this.hidden = false;
+  }
+
   postConstruct(): void {
     this.observable = new Observable();
     this.addEventListener('click', this.onClick);
@@ -26,5 +30,6 @@ export class PlayButton extends CustomWebComponent {
 
   onClick() {
     this.observable.notify();
+    this.hidden = true;
   }
 }
