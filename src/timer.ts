@@ -1,9 +1,9 @@
 // Controls the timer countdown and provides subscriptions for timer tick (observer pattern).
 
-import { Observable } from './lib/observable';
+import { Observable } from './lib';
 
 // Controls the timer event loop
-let handler: number;
+let handler: number | null;
 
 let timer = 60;
 
@@ -44,5 +44,6 @@ function timerTick() {
 export function pauseTimer() {
   if (handler) {
     clearInterval(handler);
+    handler = null;
   }
 }

@@ -8,8 +8,15 @@
       href="https://fonts.googleapis.com/css?family=Lato|Source+Sans+Pro&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css?family=Orbitron"
+      rel="stylesheet"
+      type="text/css"
+    />
     <title>CodingGarden - Pokemon</title>
     <script src="./dist/main.js"></script>
+    <link rel="prefetch" href="/assets/sprite_f1.png" />
+    <link rel="prefetch" href="/assets/sprite_f2.png" />
   </head>
   <body>
     <div id="container">
@@ -17,9 +24,10 @@
         <h1>Gotta catch 'em all!</h1>
       </header>
       <section id="board"></section>
-      <aside id="play">
+      <section id="play">
+        <counter-clock></counter-clock>
         <play-button></play-button>
-      </aside>
+      </section>
       <footer>footer</footer>
     </div>
   </body>
