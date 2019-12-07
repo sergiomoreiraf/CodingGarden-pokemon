@@ -1,7 +1,19 @@
 {
-  "cSpell.words": [
-    "beforeend",
-    "clazz",
-    "webcomp"
-  ]
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 80,
+  "editor.formatOnPaste": false,
+  "workbench.commandPalette.preserveInput": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "html.format.wrapLineLength": 80,
+  "vsicons.projectDetection.autoReload": true,
+  "prettier.singleQuote": true,
+  "prettier.printWidth": 80,
+  "prettier.tabWidth": 2,
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "liveServer.settings.root": "/dist/web"
 }
