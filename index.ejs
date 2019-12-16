@@ -22,13 +22,15 @@
       </header>
       <section id="board"></section>
       <section id="play">
-        <counter-clock></counter-clock>
-        <play-button></play-button>
+        <play-area></play-area>
       </section>
-      <footer>footer</footer>
+      <footer>
+        <counter-clock></counter-clock> <play-button></play-button>
+      </footer>
     </div>
     ${require('./view/moving-pokemon/moving-pokemon.html')}
     ${require('./view/counter-clock/counter-clock.html')}
     ${require('./view/play-button/play-button.html')}
+    ${require('./view/play-area/play-area.html')}
   </body>
 </html>

@@ -29,7 +29,7 @@ h2 {
   display: grid;
   height: 100%;
   grid-template-columns: auto;
-  grid-template-rows: 80px 1fr 140px 40px;
+  grid-template-rows: 80px 1fr 120px 40px;
   grid-template-areas:
     'header'
     'board'
@@ -79,4 +79,52 @@ moving-pokemon {
 
 counter-clock {
   font-family: 'Orbitron', sans-serif;
+}
+
+play-area {
+  display: grid;
+  width: 99vw;
+  grid-template-columns: minmax(110px, 1fr) 3fr;
+  #photo {
+    padding: 8px;
+    justify-self: center;
+    align-self: end;
+    transition: 0.5s;
+    img {
+      width: 90px;
+      height: 90px;
+      transition: 1s;
+      filter: brightness(0) drop-shadow(0 0 0.7rem gold);
+    }
+    &.reveal {
+      background-color: $background-color;
+      img {
+        filter: brightness(1);
+      }
+    }
+  }
+  #guess {
+    ul {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      li {
+        display: flex;
+        align-items: center;
+        width: 46%;
+        list-style: none;
+        margin: 2px;
+        &:before {
+          content: '';
+          float: left;
+          height: 20px;
+          width: 20px;
+          background-size: contain;
+          background-image: url('../assets/items/poke-ball.png');
+          background-repeat: no-repeat;
+        }
+      }
+    }
+  }
 }
