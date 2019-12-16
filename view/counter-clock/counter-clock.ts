@@ -10,6 +10,7 @@ export class CounterClock extends CustomWebComponent {
 
   constructor() {
     super('counter-clock');
+    this.counter = 0;
   }
 
   set counter(secs: number) {
