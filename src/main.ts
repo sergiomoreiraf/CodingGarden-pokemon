@@ -1,29 +1,51 @@
 import { onLoadDocument, generateRandomNumbers } from './lib';
-import { config } from './config';
 import * as timer from './timer';
-
-import { MovingPokemon, PlayButton, CounterClock } from '../view';
+import * as view from '../view';
 
 // init sass
 import '../sass/style.scss';
 // init web components
-import '../view/main';
+import '../view';
 
 // Initial app state
-let pokemonNames: { [key: number]: string } = {};
-let movingPokemons: MovingPokemon[];
-let appHasError = false;
+type typeState = {
+  pokemonNames: { [key: number]: string };
+  movingPokemons: view.MovingPokemon[];
+  error: {
+    hasError: boolean;
+  };
+};
+const state: typeState = {
+  pokemonNames: {},
+  movingPokemons: [],
+  error: {
+    hasError: false
+  }
+};
 
-// Cache some DOM elements
-const getDomBoard = () => document.getElementById('board')!;
-const getDomPlayButton = () =>
-  <PlayButton>document.getElementsByTagName('play-button')[0];
-const getDomCounterClock = () =>
-  <CounterClock>document.getElementsByTagName('counter-clock')[0];
+const config = {
+  // api endpoint that provides the pokemon names
+  url: `https://pokeapi.co/api/v2/pokemon/?limit=10`,
+  // numbers of pokemons to play with. Must match 'limit' on url query
+  size: 100
+};
 
-// General error handling
-export const error = () => {
-  appHasError = true;
+const DOM = {
+  getBoard: () => document.getElementById('board')!,
+  getPlayButton: () =>
+    <view.PlayButton>document.getElementsByTagName('play-button')[0],
+  getCounterClock: () =>
+    <view.CounterClock>document.getElementsByTagName('counter-clock')[0],
+  getDomPlayArea: () =>
+    <view.PlayArea>document.getElementsByTagName('play-area')[0]
+};
+
+/**
+ * General error handling
+ */
+export const error = (err: any) => {
+  console.error(err);
+  state.error.hasError = true;
 };
 
 // What happens when the app loads
@@ -35,38 +57,36 @@ onLoadDocument(init);
 
 // fetch pokemon names from pokeApi
 const fetchPokemons = async () => {
-  const url = config.pokeApi.url;
-  await fetch(url)
+  await fetch(config.url)
     .then(res => res.json())
     .then(data => {
       data.results.map((pokemon: any) => {
         const _ = pokemon.url.split('/');
         _.pop();
         const id = _.pop();
-        pokemonNames[id] = pokemon.name;
+        state.pokemonNames[id] = pokemon.name;
       });
     })
     .catch(err => {
-      console.error(err);
-      error();
+      error(err);
     });
 };
 
+// What happens when user interact with app
 const setInitialHandlers = () => {
   // play button plays a game
-  getDomPlayButton().onCLickSubscribe(playGame);
+  DOM.getPlayButton().onCLickSubscribe(playGame);
   // game interface updates on timer tick
   timer.timerObserver.subscribe(secs => {
-    getDomCounterClock().counter = secs!;
+    DOM.getCounterClock().counter = secs!;
     if (secs === 0) {
-      getDomPlayButton().show();
+      DOM.getPlayButton().show();
     }
   });
   // also it moves pokemon on timer tick
   timer.timerObserver.subscribe(movePokemons);
 };
 
-// When u hit play button
 const playGame = () => {
   generateBoard();
   timer.resetTimer();
@@ -74,24 +94,24 @@ const playGame = () => {
 };
 
 const generateBoard = () => {
-  // Clear the board
-  while (getDomBoard().firstChild) {
-    getDomBoard().removeChild(getDomBoard().firstChild!);
+  // clear the board
+  while (DOM.getBoard().firstChild) {
+    DOM.getBoard().removeChild(DOM.getBoard().firstChild!);
   }
-  // generate random pokemons
-  const selectPokemons = generateRandomNumbers(1, config.pokeApi.size, 49);
-  movingPokemons = [];
+  // generate random pokemons and add to board
+  const selectPokemons = generateRandomNumbers(1, config.size, 49);
+  state.movingPokemons = [];
   for (let i = 0; i < 49; i++) {
-    const pokemon = new MovingPokemon(selectPokemons[i]);
-    movingPokemons.push(pokemon);
-    getDomBoard().appendChild(pokemon);
+    const pokemon = new view.MovingPokemon(selectPokemons[i]);
+    state.movingPokemons.push(pokemon);
+    DOM.getBoard().appendChild(pokemon);
   }
 };
 
-// Handles pokemon animation by toggling the frame from a random selected position on board.
+// Handles pokemon animation by toggle the frame.
 const movePokemons = () => {
   const pokemonsToMove = generateRandomNumbers(0, 48, 35);
   pokemonsToMove.map(nr => {
-    (<MovingPokemon>getDomBoard().childNodes[nr]).toggleFrame();
+    (<view.MovingPokemon>DOM.getBoard().childNodes[nr]).toggleFrame();
   });
 };
