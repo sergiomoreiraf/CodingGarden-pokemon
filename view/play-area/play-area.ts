@@ -30,15 +30,14 @@ export class PlayArea extends CustomWebComponent {
     this.onClickObservable.notify(name);
   }
 
-  reveal() {
-    this.querySelector('#photo')!.classList.add('reveal');
-  }
-
   highlight(choice: string, answer: string) {
+    this.querySelector('#photo')!.classList.add('reveal');
     const isCorrect = choice === answer;
     this.querySelectorAll('li').forEach(node => {
       if (node.textContent === choice) {
         node.classList.add(isCorrect ? 'correct' : 'wrong');
+      } else if (node.textContent === answer) {
+        node.classList.add('correct');
       }
     });
   }

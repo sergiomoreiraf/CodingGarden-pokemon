@@ -55,7 +55,7 @@ const init = async () => {
   await fetchPokemons();
   DOM.getPlayButton().onClickObservable.subscribe(playGame);
   timer.timerObservable.subscribe(secs => {
-    DOM.getCounterClock().counter = secs!;
+    DOM.getCounterClock().counter = secs;
     if (secs === 0) {
       DOM.getPlayButton().show();
     }
@@ -88,15 +88,13 @@ const playGame = () => {
 };
 
 const generateBoard = () => {
+  state.movingPokemons = [];
   lib.cleanChildElements(DOM.getBoardSection());
   // generate random pokemons and add to board
   const selectPokemons = lib.generateRandomNumbers(1, config.size, 49);
-  state.movingPokemons = [];
   for (let i = 0; i < 49; i++) {
     const pokemon = new view.MovingPokemon(selectPokemons[i]);
-    pokemon.onClickObservable.subscribe(pokemon =>
-      selectPokemonOnBoard(pokemon!)
-    );
+    pokemon.onClickObservable.subscribe(selectPokemonOnBoard);
     state.movingPokemons.push(pokemon);
     DOM.getBoardSection().appendChild(pokemon);
   }
@@ -125,14 +123,13 @@ const selectPokemonOnBoard = (pokemon: view.MovingPokemon) => {
   const namedPokemons = pokemonsToChose.map(nr => state.pokemonNames[nr]);
   lib.cleanChildElements(DOM.getPlaySection());
   const playArea = new view.PlayArea(pokemon.number, namedPokemons);
-  playArea.onClickObservable.subscribe(str => handleGuess(str!));
+  playArea.onClickObservable.subscribe(handleGuess);
   DOM.getPlaySection().appendChild(playArea);
 };
 
 const handleGuess = (guess: string) => {
   const answer = state.pokemonNames[state.selectedPokemon?.number!];
   const isCorrect = answer === guess;
-  DOM.getPlayArea().reveal();
   DOM.getPlayArea().highlight(guess, answer);
   if (isCorrect) {
     console.log('correct');
