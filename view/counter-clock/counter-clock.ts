@@ -1,7 +1,7 @@
 import { CustomWebComponent } from '../custom-webcomp';
 
 /**
- * Shows a clock based on counter attribute
+ * Shows a clock from a counter attribute
  */
 export class CounterClock extends CustomWebComponent {
   static get observedAttributes() {
@@ -22,15 +22,10 @@ export class CounterClock extends CustomWebComponent {
   }
 
   get counter() {
-    const number = this.getAttribute('counter');
-    return number ? +number : 0;
+    return this.counter;
   }
 
   attributeChangedCallback(attrName: string, oldVal: any, newVal: any) {
     this.firstChild!.textContent = newVal;
   }
-
-  postConstruct(): void {}
-
-  preDestroy(): void {}
 }

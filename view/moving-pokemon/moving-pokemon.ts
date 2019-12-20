@@ -1,21 +1,19 @@
 import { CustomWebComponent } from '../custom-webcomp';
+import { Observable } from './../../src/lib/observable';
 
 /**
- * A moving pokemon that is later attached to the board.
+ * A moving pokemon based on frame toggle.
  *
- * Every pokemon must have an id. This is given on the constructor.
+ * Every pokemon must have his numeric id.
  */
 export class MovingPokemon extends CustomWebComponent {
+  public onClickObservable: Observable<number> = new Observable();
   static get observedAttributes() {
     return ['frame'];
   }
 
-  private readonly nr: number;
-  private frame = 0;
-
-  constructor(nr: number) {
+  constructor(private nr: number, private frame: 0 | 1 = 0) {
     super('moving-pokemon');
-    this.nr = nr;
   }
 
   toggleFrame() {
@@ -24,12 +22,21 @@ export class MovingPokemon extends CustomWebComponent {
   }
 
   attributeChangedCallback(attrName: string, oldVal: any, newVal: any) {
-    newVal === '1' ? this.classList.add('f2') : this.classList.remove('f2');
+    if (attrName === 'frame')
+      newVal === '1' ? this.classList.add('f2') : this.classList.remove('f2');
   }
 
-  postConstruct(): void {
+  private onClick() {
+    this.onClickObservable.notify(this.nr);
+  }
+
+  protected postConstruct(): void {
     this.classList.add('n' + this.nr);
+    this.addEventListener('click', this.onClick);
   }
 
-  preDestroy(): void {}
+  protected preDestroy(): void {
+    this.onClickObservable.unsubscribeAll();
+    this.removeEventListener('click', this.onClick);
+  }
 }

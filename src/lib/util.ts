@@ -1,11 +1,4 @@
 /**
- * Handler to execute a function when document loads.
- */
-export function onLoadDocument(fn: () => void) {
-  document.addEventListener('DOMContentLoaded', fn, false);
-}
-
-/**
  * Computes an array of random non repeating numbers
  */
 export function generateRandomNumbers(
@@ -40,4 +33,25 @@ export function generateRandomNumbers(
   }
 
   return ret;
+}
+
+// Copy from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+export function shuffle(arr: any[]) {
+  let currentIndex = arr.length,
+    temporaryValue,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = arr[currentIndex];
+    arr[currentIndex] = arr[randomIndex];
+    arr[randomIndex] = temporaryValue;
+  }
+
+  return arr;
 }

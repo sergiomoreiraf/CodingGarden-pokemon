@@ -1,4 +1,4 @@
-import { onLoadDocument, generateRandomNumbers } from './lib';
+import * as lib from './lib';
 import * as timer from './timer';
 import * as view from '../view';
 
@@ -25,19 +25,18 @@ const state: typeState = {
 
 const config = {
   // api endpoint that provides the pokemon names
-  url: `https://pokeapi.co/api/v2/pokemon/?limit=10`,
+  url: `https://pokeapi.co/api/v2/pokemon/?limit=100`,
   // numbers of pokemons to play with. Must match 'limit' on url query
   size: 100
 };
 
-const DOM = {
-  getBoard: () => document.getElementById('board')!,
+export const DOM = {
+  getBoardSection: () => document.getElementById('board')!,
+  getDomPlaySection: () => document.getElementById('play')!,
   getPlayButton: () =>
     <view.PlayButton>document.getElementsByTagName('play-button')[0],
   getCounterClock: () =>
-    <view.CounterClock>document.getElementsByTagName('counter-clock')[0],
-  getDomPlayArea: () =>
-    <view.PlayArea>document.getElementsByTagName('play-area')[0]
+    <view.CounterClock>document.getElementsByTagName('counter-clock')[0]
 };
 
 /**
@@ -51,9 +50,16 @@ export const error = (err: any) => {
 // What happens when the app loads
 const init = async () => {
   await fetchPokemons();
-  setInitialHandlers();
+  DOM.getPlayButton().onClickObservable.subscribe(playGame);
+  timer.timerObservable.subscribe(secs => {
+    DOM.getCounterClock().counter = secs!;
+    if (secs === 0) {
+      DOM.getPlayButton().show();
+    }
+  });
+  timer.timerObservable.subscribe(movePokemons);
 };
-onLoadDocument(init);
+lib.onLoadDocument(init);
 
 // fetch pokemon names from pokeApi
 const fetchPokemons = async () => {
@@ -72,21 +78,6 @@ const fetchPokemons = async () => {
     });
 };
 
-// What happens when user interact with app
-const setInitialHandlers = () => {
-  // play button plays a game
-  DOM.getPlayButton().onCLickSubscribe(playGame);
-  // game interface updates on timer tick
-  timer.timerObserver.subscribe(secs => {
-    DOM.getCounterClock().counter = secs!;
-    if (secs === 0) {
-      DOM.getPlayButton().show();
-    }
-  });
-  // also it moves pokemon on timer tick
-  timer.timerObserver.subscribe(movePokemons);
-};
-
 const playGame = () => {
   generateBoard();
   timer.resetTimer();
@@ -94,24 +85,39 @@ const playGame = () => {
 };
 
 const generateBoard = () => {
-  // clear the board
-  while (DOM.getBoard().firstChild) {
-    DOM.getBoard().removeChild(DOM.getBoard().firstChild!);
-  }
+  lib.cleanChildElements(DOM.getBoardSection());
   // generate random pokemons and add to board
-  const selectPokemons = generateRandomNumbers(1, config.size, 49);
+  const selectPokemons = lib.generateRandomNumbers(1, config.size, 49);
   state.movingPokemons = [];
   for (let i = 0; i < 49; i++) {
     const pokemon = new view.MovingPokemon(selectPokemons[i]);
+    pokemon.onClickObservable.subscribe(nr => selectPokemonOnBoard(nr!));
     state.movingPokemons.push(pokemon);
-    DOM.getBoard().appendChild(pokemon);
+    DOM.getBoardSection().appendChild(pokemon);
   }
 };
 
-// Handles pokemon animation by toggle the frame.
+// Handles pokemon animation by toggling the frame.
 const movePokemons = () => {
-  const pokemonsToMove = generateRandomNumbers(0, 48, 35);
+  const pokemonsToMove = lib.generateRandomNumbers(0, 48, 35);
   pokemonsToMove.map(nr => {
-    (<view.MovingPokemon>DOM.getBoard().childNodes[nr]).toggleFrame();
+    (<view.MovingPokemon>DOM.getBoardSection().childNodes[nr]).toggleFrame();
   });
+};
+
+const selectPokemonOnBoard = (nr: number) => {
+  const initialPokemonsToChose = [nr];
+  if (nr > 1) initialPokemonsToChose.push(nr - 1);
+  if (nr < config.size) initialPokemonsToChose.push(nr + 1);
+  let pokemonsToChose = lib.generateRandomNumbers(
+    1,
+    config.size,
+    6,
+    initialPokemonsToChose
+  );
+  pokemonsToChose = lib.shuffle(pokemonsToChose);
+  const namedPokemons = pokemonsToChose.map(nr => state.pokemonNames[nr]);
+  lib.cleanChildElements(DOM.getDomPlaySection());
+  const playArea = new view.PlayArea(nr, namedPokemons);
+  DOM.getDomPlaySection().appendChild(playArea);
 };

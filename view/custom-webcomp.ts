@@ -8,17 +8,15 @@
  * @extends {HTMLElement}
  */
 export abstract class CustomWebComponent extends HTMLElement {
-  public templateId: string;
-  constructor(templateId: string) {
+  constructor(private templateId: string) {
     super();
-    this.templateId = templateId;
   }
   connectedCallback() {
     const idTemplate = this.templateId + '-template';
     const elm = document.getElementById(idTemplate);
     if (!elm) {
       throw new Error(
-        `id ${idTemplate} not found on HTML. Make sure you created and/or fetched a html <template> with this id.`
+        `id ${idTemplate} not found on HTML. Make sure you created or fetched a html <template> with this id.`
       );
     }
     const t = (<any>elm!).content;
@@ -33,10 +31,10 @@ export abstract class CustomWebComponent extends HTMLElement {
   /**
    * Called at the end of connectedCallback(). This is right after the element is attached to the DOM.
    *
-   * You should implement event listeners.
+   * You should implement event listeners here if needed.
    * ex: this.addEventListener('click', this.onClick);
    */
-  abstract postConstruct(): void;
+  protected postConstruct() {}
 
   /**
    * Called at the end of disconnectedCallback(). This is when the element is detached from the DOM.
@@ -46,5 +44,5 @@ export abstract class CustomWebComponent extends HTMLElement {
    *
    * This avoids memory leak
    */
-  abstract preDestroy(): void;
+  protected preDestroy() {}
 }
