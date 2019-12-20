@@ -7,7 +7,7 @@ import { Observable } from './../../src/lib/observable';
  * Every pokemon must have his numeric id.
  */
 export class MovingPokemon extends CustomWebComponent {
-  public onClickObservable: Observable<number> = new Observable();
+  public onClickObservable: Observable<MovingPokemon> = new Observable();
   static get observedAttributes() {
     return ['frame'];
   }
@@ -26,8 +26,12 @@ export class MovingPokemon extends CustomWebComponent {
       newVal === '1' ? this.classList.add('f2') : this.classList.remove('f2');
   }
 
+  get number() {
+    return this.nr;
+  }
+
   private onClick() {
-    this.onClickObservable.notify(this.nr);
+    this.onClickObservable.notify(this);
   }
 
   protected postConstruct(): void {

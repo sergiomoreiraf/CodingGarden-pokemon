@@ -99,7 +99,7 @@ play-area {
     &.reveal {
       background-color: $background-color;
       img {
-        filter: brightness(1);
+        filter: brightness(1) drop-shadow(0 0 0.2rem white);
       }
     }
   }
@@ -110,6 +110,7 @@ play-area {
       flex-direction: row;
       flex-wrap: wrap;
       li {
+        cursor: pointer;
         display: flex;
         align-items: center;
         width: 46%;
@@ -123,6 +124,12 @@ play-area {
           background-size: contain;
           background-image: url('../assets/items/poke-ball.png');
           background-repeat: no-repeat;
+        }
+        &.correct {
+          color: green;
+        }
+        &.wrong {
+          color: red;
         }
       }
     }

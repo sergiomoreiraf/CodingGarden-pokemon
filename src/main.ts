@@ -11,6 +11,7 @@ import '../view';
 type typeState = {
   pokemonNames: { [key: number]: string };
   movingPokemons: view.MovingPokemon[];
+  selectedPokemon?: view.MovingPokemon;
   error: {
     hasError: boolean;
   };
@@ -30,19 +31,21 @@ const config = {
   size: 100
 };
 
-export const DOM = {
+const DOM = {
   getBoardSection: () => document.getElementById('board')!,
-  getDomPlaySection: () => document.getElementById('play')!,
+  getPlaySection: () => document.getElementById('play')!,
   getPlayButton: () =>
     <view.PlayButton>document.getElementsByTagName('play-button')[0],
   getCounterClock: () =>
-    <view.CounterClock>document.getElementsByTagName('counter-clock')[0]
+    <view.CounterClock>document.getElementsByTagName('counter-clock')[0],
+  getPlayArea: () =>
+    <view.PlayArea>document.getElementsByTagName('play-area')[0]
 };
 
 /**
  * General error handling
  */
-export const error = (err: any) => {
+const error = (err: any) => {
   console.error(err);
   state.error.hasError = true;
 };
@@ -91,7 +94,9 @@ const generateBoard = () => {
   state.movingPokemons = [];
   for (let i = 0; i < 49; i++) {
     const pokemon = new view.MovingPokemon(selectPokemons[i]);
-    pokemon.onClickObservable.subscribe(nr => selectPokemonOnBoard(nr!));
+    pokemon.onClickObservable.subscribe(pokemon =>
+      selectPokemonOnBoard(pokemon!)
+    );
     state.movingPokemons.push(pokemon);
     DOM.getBoardSection().appendChild(pokemon);
   }
@@ -105,19 +110,31 @@ const movePokemons = () => {
   });
 };
 
-const selectPokemonOnBoard = (nr: number) => {
-  const initialPokemonsToChose = [nr];
-  if (nr > 1) initialPokemonsToChose.push(nr - 1);
-  if (nr < config.size) initialPokemonsToChose.push(nr + 1);
+const selectPokemonOnBoard = (pokemon: view.MovingPokemon) => {
+  state.selectedPokemon = pokemon;
+  const initPokeToChose = [pokemon.number];
+  if (pokemon.number > 1) initPokeToChose.push(pokemon.number - 1);
+  if (pokemon.number < config.size) initPokeToChose.push(pokemon.number + 1);
   let pokemonsToChose = lib.generateRandomNumbers(
     1,
     config.size,
     6,
-    initialPokemonsToChose
+    initPokeToChose
   );
   pokemonsToChose = lib.shuffle(pokemonsToChose);
   const namedPokemons = pokemonsToChose.map(nr => state.pokemonNames[nr]);
-  lib.cleanChildElements(DOM.getDomPlaySection());
-  const playArea = new view.PlayArea(nr, namedPokemons);
-  DOM.getDomPlaySection().appendChild(playArea);
+  lib.cleanChildElements(DOM.getPlaySection());
+  const playArea = new view.PlayArea(pokemon.number, namedPokemons);
+  playArea.onClickObservable.subscribe(str => handleGuess(str!));
+  DOM.getPlaySection().appendChild(playArea);
+};
+
+const handleGuess = (guess: string) => {
+  const answer = state.pokemonNames[state.selectedPokemon?.number!];
+  const isCorrect = answer === guess;
+  DOM.getPlayArea().reveal();
+  DOM.getPlayArea().highlight(guess, answer);
+  if (isCorrect) {
+    console.log('correct');
+  }
 };
