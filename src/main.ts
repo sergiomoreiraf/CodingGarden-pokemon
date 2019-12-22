@@ -129,9 +129,5 @@ const selectPokemonOnBoard = (pokemon: view.MovingPokemon) => {
 
 const handleGuess = (guess: string) => {
   const answer = state.pokemonNames[state.selectedPokemon?.number!];
-  const isCorrect = answer === guess;
   DOM.getPlayArea().highlight(guess, answer);
-  if (isCorrect) {
-    console.log('correct');
-  }
 };

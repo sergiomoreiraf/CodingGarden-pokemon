@@ -12,9 +12,11 @@ export class PlayArea extends CustomWebComponent {
     this.getElementsByTagName('img')[0].src = src;
     const ul = this.getElementsByTagName('ul')[0];
     this.names.map(name => {
+      const span = document.createElement('span');
+      span.textContent = name;
+      span.addEventListener('click', this.onClick);
       const li = document.createElement('li');
-      li.textContent = name;
-      li.addEventListener('click', () => this.onClick(name));
+      li.appendChild(span);
       ul.appendChild(li);
     });
   }
@@ -22,22 +24,32 @@ export class PlayArea extends CustomWebComponent {
   protected preDestroy(): void {
     const ul = this.getElementsByTagName('ul')[0];
     ul.childNodes.forEach(node =>
-      node.removeEventListener('click', () => this.onClick(name))
+      node.firstChild!.removeEventListener('click', this.onClick)
     );
   }
 
-  private onClick(name: string) {
-    this.onClickObservable.notify(name);
+  private onClick() {
+    const name = this.textContent!;
+    let _ = this.parentElement!;
+    while (_.tagName !== 'PLAY-AREA') {
+      _ = _.parentElement!;
+    }
+    const playArea = <PlayArea>_;
+    playArea.onClickObservable.notify(name);
   }
 
   highlight(choice: string, answer: string) {
     this.querySelector('#photo')!.classList.add('reveal');
     const isCorrect = choice === answer;
-    this.querySelectorAll('li').forEach(node => {
-      if (node.textContent === choice) {
-        node.classList.add(isCorrect ? 'correct' : 'wrong');
-      } else if (node.textContent === answer) {
-        node.classList.add('correct');
+    this.querySelectorAll('li').forEach(li => {
+      const span = li.getElementsByTagName('span')[0];
+      span.removeEventListener('click', this.onClick);
+      if (span.textContent === choice) {
+        span.classList.add(isCorrect ? 'correct' : 'wrong');
+      } else if (span.textContent === answer) {
+        span.classList.add('correct');
+      } else {
+        span.classList.add('fade');
       }
     });
   }
