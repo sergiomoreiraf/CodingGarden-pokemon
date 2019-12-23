@@ -14,6 +14,7 @@ export class PlayArea extends CustomWebComponent {
     this.names.map(name => {
       const span = document.createElement('span');
       span.textContent = name;
+      span.classList.add('link');
       span.addEventListener('click', this.onClick);
       const li = document.createElement('li');
       li.appendChild(span);
@@ -43,6 +44,7 @@ export class PlayArea extends CustomWebComponent {
     const isCorrect = choice === answer;
     this.querySelectorAll('li').forEach(li => {
       const span = li.getElementsByTagName('span')[0];
+      span.classList.remove('link');
       span.removeEventListener('click', this.onClick);
       if (span.textContent === choice) {
         span.classList.add(isCorrect ? 'correct' : 'wrong');

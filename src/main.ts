@@ -8,13 +8,19 @@ import '../sass/style.scss';
 import '../view';
 
 // Initial app state
+type score = {
+  right: number;
+  wrong: number;
+};
 type typeState = {
   pokemonNames: { [key: number]: string };
   movingPokemons: view.MovingPokemon[];
   selectedPokemon?: view.MovingPokemon;
   error: {
     hasError: boolean;
+    cause?: string;
   };
+  score?: score;
 };
 const state: typeState = {
   pokemonNames: {},
@@ -83,6 +89,7 @@ const fetchPokemons = async () => {
 
 const playGame = () => {
   generateBoard();
+  state.score = { right: 0, wrong: 0 };
   timer.resetTimer();
   timer.startTimer();
 };
@@ -90,7 +97,6 @@ const playGame = () => {
 const generateBoard = () => {
   state.movingPokemons = [];
   lib.cleanChildElements(DOM.getBoardSection());
-  // generate random pokemons and add to board
   const selectPokemons = lib.generateRandomNumbers(1, config.size, 49);
   for (let i = 0; i < 49; i++) {
     const pokemon = new view.MovingPokemon(selectPokemons[i]);
@@ -100,7 +106,6 @@ const generateBoard = () => {
   }
 };
 
-// Handles pokemon animation by toggling the frame.
 const movePokemons = () => {
   const pokemonsToMove = lib.generateRandomNumbers(0, 48, 35);
   pokemonsToMove.map(nr => {
@@ -128,6 +133,13 @@ const selectPokemonOnBoard = (pokemon: view.MovingPokemon) => {
 };
 
 const handleGuess = (guess: string) => {
-  const answer = state.pokemonNames[state.selectedPokemon?.number!];
+  const answer = state.pokemonNames[state.selectedPokemon!.number];
   DOM.getPlayArea().highlight(guess, answer);
+  const isCorrect = answer === guess;
+  state.selectedPokemon!.hidePokemon(isCorrect);
+  if (isCorrect) {
+    state.score!.right++;
+  } else {
+    state.score!.wrong++;
+  }
 };
