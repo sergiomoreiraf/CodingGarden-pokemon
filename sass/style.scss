@@ -1,6 +1,8 @@
 $body-color: white;
 $background-color: rgb(32, 32, 32);
 $board-color: whitesmoke;
+$catch-color: forestgreen;
+$flee-color: orangered;
 
 /* Reset */
 * {
@@ -29,10 +31,11 @@ h2 {
   display: grid;
   height: 100%;
   grid-template-columns: auto;
-  grid-template-rows: 80px 1fr 120px 40px;
+  grid-template-rows: 80px 1fr 40px 120px 40px;
   grid-template-areas:
     'header'
     'board'
+    'score'
     'play'
     'footer';
   justify-items: center;
@@ -47,6 +50,10 @@ h2 {
     grid-template-columns: repeat(7, 42px);
     grid-template-rows: repeat(7, 42px);
     gap: 1px;
+  }
+  #score {
+    align-self: start;
+    grid-area: score;
   }
   #play {
     grid-area: play;
@@ -136,6 +143,26 @@ moving-pokemon {
   }
 }
 
+current-score {
+  font-family: 'Lato', sans-serif;
+  .catch {
+    padding: 4px;
+    span {
+      margin: 4px;
+      font-weight: bold;
+      color: $catch-color;
+    }
+  }
+  .flee {
+    padding: 4px;
+    span {
+      margin: 4px;
+      font-weight: bold;
+      color: $flee-color;
+    }
+  }
+}
+
 counter-clock {
   font-family: 'Orbitron', sans-serif;
 }
@@ -208,10 +235,10 @@ play-area {
             background-repeat: no-repeat;
           }
           &.correct {
-            color: green;
+            color: $catch-color;
           }
           &.wrong {
-            color: red;
+            color: $flee-color;
           }
           &.fade {
             opacity: 0;

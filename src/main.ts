@@ -9,8 +9,8 @@ import '../view';
 
 // Initial app state
 type score = {
-  right: number;
-  wrong: number;
+  catch: number;
+  flee: number;
 };
 type typeState = {
   pokemonNames: { [key: number]: string };
@@ -40,6 +40,8 @@ const config = {
 const DOM = {
   getBoardSection: () => document.getElementById('board')!,
   getPlaySection: () => document.getElementById('play')!,
+  getScore: () =>
+    <view.CurrentScore>document.getElementsByTagName('current-score')[0],
   getPlayButton: () =>
     <view.PlayButton>document.getElementsByTagName('play-button')[0],
   getCounterClock: () =>
@@ -89,7 +91,7 @@ const fetchPokemons = async () => {
 
 const playGame = () => {
   generateBoard();
-  state.score = { right: 0, wrong: 0 };
+  state.score = { catch: 0, flee: 0 };
   timer.resetTimer();
   timer.startTimer();
 };
@@ -138,8 +140,10 @@ const handleGuess = (guess: string) => {
   const isCorrect = answer === guess;
   state.selectedPokemon!.hidePokemon(isCorrect);
   if (isCorrect) {
-    state.score!.right++;
+    state.score!.catch++;
+    DOM.getScore().catch = state.score!.catch;
   } else {
-    state.score!.wrong++;
+    state.score!.flee++;
+    DOM.getScore().flee = state.score!.flee;
   }
 };
