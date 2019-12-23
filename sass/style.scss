@@ -56,11 +56,70 @@ h2 {
   }
 }
 
+@keyframes pokemon-catch {
+  from {
+    transform: scale(1);
+    transform-origin: center center;
+    animation-timing-function: ease-out;
+  }
+  10% {
+    transform: scale(0.91);
+    animation-timing-function: ease-in;
+  }
+  17% {
+    transform: scale(0.98);
+    animation-timing-function: ease-out;
+  }
+  33% {
+    transform: scale(0.87);
+    animation-timing-function: ease-in;
+  }
+  45% {
+    transform: scale(1);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes pokemon-hide {
+  0%,
+  100% {
+    transform: translateX(0);
+    transform: scale(0);
+  }
+  10%,
+  30%,
+  50%,
+  70% {
+    transform: translateX(-10px);
+  }
+  20%,
+  40%,
+  60% {
+    transform: translateX(10px);
+  }
+  80% {
+    transform: translateX(8px);
+  }
+  90% {
+    transform: translateX(-8px);
+  }
+}
 moving-pokemon {
   background-color: $board-color;
   width: 40px;
   height: 40px;
   background-repeat: no-repeat;
+  &.link {
+    cursor: pointer;
+  }
+  &.catch {
+    animation: pokemon-catch 2s linear both;
+  }
+  &.gone {
+    animation: pokemon-hide 2s linear both;
+  }
   @for $x from 1 through 28 {
     @for $y from 1 through 18 {
       @if (($x + (($y - 1) * 28)) <= 492) {

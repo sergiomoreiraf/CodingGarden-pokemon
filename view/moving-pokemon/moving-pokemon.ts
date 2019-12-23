@@ -30,12 +30,19 @@ export class MovingPokemon extends CustomWebComponent {
     return this.nr;
   }
 
+  hidePokemon(isCaptured: boolean) {
+    this.removeEventListener('click', this.onClick);
+    this.classList.remove('link');
+    this.classList.add(isCaptured ? 'catch' : 'gone');
+  }
+
   private onClick() {
     this.onClickObservable.notify(this);
   }
 
   protected postConstruct(): void {
     this.classList.add('n' + this.nr);
+    this.classList.add('link');
     this.addEventListener('click', this.onClick);
   }
 
