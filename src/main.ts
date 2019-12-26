@@ -31,9 +31,9 @@ const state: typeState = {
 
 const config = {
   // api endpoint that provides the pokemon names
-  url: `https://pokeapi.co/api/v2/pokemon/?limit=100`,
+  url: `https://pokeapi.co/api/v2/pokemon/?limit=492`,
   // numbers of pokemons to play with. Must match 'limit' on url query
-  size: 100
+  size: 492
 };
 
 const DOM = {
