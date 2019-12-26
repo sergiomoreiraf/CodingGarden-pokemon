@@ -4,6 +4,10 @@ $board-color: whitesmoke;
 $catch-color: forestgreen;
 $flee-color: orangered;
 
+$primary-font: 'Roboto', sans-serif;
+$secondary-font: 'Patrick Hand', cursive;
+$numeric-font: 'Orbitron', sans-serif;
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -17,7 +21,7 @@ body {
   background-color: $background-color;
   font-size: calc(12px + 0.5vw);
   line-height: calc(1.1em + 0.5vw);
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: $primary-font;
 }
 
 a {
@@ -28,7 +32,7 @@ a {
 
 h1,
 h2 {
-  font-family: 'Lato', sans-serif;
+  font-family: $secondary-font;
   padding: 10px 4px;
 }
 
@@ -75,7 +79,6 @@ button {
   }
   #board {
     grid-area: board;
-
     #board-container {
       margin: 0 auto;
       width: fit-content;
@@ -83,6 +86,9 @@ button {
       grid-template-columns: repeat(7, 42px);
       grid-template-rows: repeat(7, 42px);
       gap: 1px;
+    }
+    #info {
+      padding: 10px;
     }
   }
   #play {
@@ -93,7 +99,7 @@ button {
   }
 }
 
-// idea from https://animista.net/
+// from https://animista.net/
 @keyframes pokemon-catch {
   from {
     transform: scale(1);
@@ -120,7 +126,7 @@ button {
     transform: scale(0);
   }
 }
-// idea from https://animista.net/
+// from https://animista.net/
 @keyframes pokemon-hide {
   0%,
   100% {
@@ -175,10 +181,6 @@ moving-pokemon {
   }
 }
 
-#info {
-  padding: 10px;
-}
-
 my-intro {
   line-height: 200%;
   padding: 20px;
@@ -198,7 +200,7 @@ my-intro {
 }
 
 current-score {
-  font-family: 'Lato', sans-serif;
+  font-family: $secondary-font;
   display: flex;
   justify-content: space-evenly;
   width: 80vw;
@@ -209,6 +211,7 @@ current-score {
       margin: 4px;
       font-weight: bold;
       color: $catch-color;
+      font-family: $numeric-font;
     }
   }
   .flee {
@@ -218,12 +221,29 @@ current-score {
       margin: 4px;
       font-weight: bold;
       color: $flee-color;
+      font-family: $numeric-font;
     }
   }
 }
 
+@keyframes color-change {
+  0% {
+    color: $catch-color;
+  }
+  100% {
+    color: $flee-color;
+  }
+}
 counter-clock {
-  font-family: 'Orbitron', sans-serif;
+  span {
+    &:nth-child(1) {
+      font-family: $numeric-font;
+      color: $catch-color;
+      &.countdown {
+        animation: color-change 90s linear;
+      }
+    }
+  }
 }
 
 @keyframes fade-in-left {
@@ -239,15 +259,15 @@ counter-clock {
 play-area {
   display: grid;
   width: 99vw;
-  grid-template-columns: minmax(110px, 1fr) 3fr;
+  grid-template-columns: minmax(140px, 1fr) 3fr;
   #photo {
     padding: 8px;
     justify-self: center;
     align-self: end;
     transition: 0.5s;
     img {
-      width: 90px;
-      height: 90px;
+      width: 100px;
+      height: 100px;
       transition: 1s;
       filter: brightness(0) drop-shadow(0 0 0.7rem gold);
     }
@@ -319,6 +339,7 @@ high-scores {
     font-size: 110%;
   }
   td {
+    font-family: $numeric-font;
     padding: 4px;
     &:nth-of-type(2) {
       color: $catch-color;

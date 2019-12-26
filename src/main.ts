@@ -105,6 +105,7 @@ const startGame = () => {
   DOM.getBoardSection().insertBefore(boardContainer, DOM.getInfo());
   timer.resetTimer();
   timer.startTimer();
+  DOM.getCounterClock().initCountdown();
 };
 
 const movePokemonsTick = (secs: number) => {
