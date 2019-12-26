@@ -6,7 +6,6 @@ import * as view from '../view';
 import '../sass/style.scss';
 // init web components
 import '../view';
-import { HighScores } from '../view';
 
 // app state
 type typeState = {
@@ -162,7 +161,7 @@ const gameOver = (timeLeft: number) => {
   DOM.getBoardSection().removeChild(DOM.getBoardContainer());
   state.score!.timeLeft = timeLeft;
   state.highScores.push(state.score!);
-  const highScores = new HighScores(state.highScores);
+  const highScores = new view.HighScores(state.highScores);
   DOM.getInfo().appendChild(highScores);
   DOM.getPlayButton().show();
 };
