@@ -20,6 +20,12 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
 }
 
+a {
+  color: inherit;
+  text-decoration: inherit;
+  border-bottom: 1px solid $body-color;
+}
+
 h1,
 h2 {
   font-family: 'Lato', sans-serif;
