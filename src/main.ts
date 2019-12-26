@@ -6,12 +6,9 @@ import * as view from '../view';
 import '../sass/style.scss';
 // init web components
 import '../view';
+import { HighScores } from '../view';
 
-// Initial app state
-type score = {
-  catch: number;
-  flee: number;
-};
+// app state
 type typeState = {
   pokemonNames: { [key: number]: string };
   movingPokemons: view.MovingPokemon[];
@@ -20,11 +17,13 @@ type typeState = {
     hasError: boolean;
     cause?: string;
   };
-  score?: score;
+  score?: view.typeScore;
+  highScores: view.typeScore[];
 };
 const state: typeState = {
   pokemonNames: {},
   movingPokemons: [],
+  highScores: [],
   error: {
     hasError: false
   }
@@ -39,7 +38,9 @@ const config = {
 
 const DOM = {
   getBoardSection: () => document.getElementById('board')!,
-  getPlaySection: () => document.getElementById('play')!,
+  getBoardContainer: () => document.getElementById('board-container')!,
+  getInfo: () => document.getElementById('info')!,
+  getPlayContainer: () => document.getElementById('play-container')!,
   getScore: () =>
     <view.CurrentScore>document.getElementsByTagName('current-score')[0],
   getPlayButton: () =>
@@ -60,20 +61,7 @@ const error = (err: any) => {
 
 // What happens when the app loads
 const init = async () => {
-  await fetchPokemons();
-  DOM.getPlayButton().onClickObservable.subscribe(playGame);
-  timer.timerObservable.subscribe(secs => {
-    DOM.getCounterClock().counter = secs;
-    if (secs === 0) {
-      DOM.getPlayButton().show();
-    }
-  });
-  timer.timerObservable.subscribe(movePokemons);
-};
-lib.onLoadDocument(init);
-
-// fetch pokemon names from pokeApi
-const fetchPokemons = async () => {
+  // fetch all pokemon names from pokeApi
   await fetch(config.url)
     .then(res => res.json())
     .then(data => {
@@ -86,33 +74,53 @@ const fetchPokemons = async () => {
     })
     .catch(err => {
       error(err);
+      return;
     });
+  DOM.getPlayButton().onClickObservable.subscribe(startGame);
+  timer.timerObservable.subscribe(secs => {
+    DOM.getCounterClock().counter = secs;
+    if (secs === 0) {
+      gameOver(0);
+    }
+  });
+  timer.timerObservable.subscribe(movePokemonsTick);
 };
+lib.onLoadDocument(init);
 
-const playGame = () => {
-  generateBoard();
+const startGame = () => {
   state.score = { catch: 0, flee: 0 };
-  timer.resetTimer();
-  timer.startTimer();
-};
-
-const generateBoard = () => {
+  DOM.getScore().catch = 0;
+  DOM.getScore().flee = 0;
+  lib.cleanChildElements(DOM.getInfo());
+  const boardContainer = document.createElement('div');
+  boardContainer.id = 'board-container';
   state.movingPokemons = [];
-  lib.cleanChildElements(DOM.getBoardSection());
   const selectPokemons = lib.generateRandomNumbers(1, config.size, 49);
   for (let i = 0; i < 49; i++) {
     const pokemon = new view.MovingPokemon(selectPokemons[i]);
     pokemon.onClickObservable.subscribe(selectPokemonOnBoard);
     state.movingPokemons.push(pokemon);
-    DOM.getBoardSection().appendChild(pokemon);
+    boardContainer.appendChild(pokemon);
   }
+  DOM.getBoardSection().insertBefore(boardContainer, DOM.getInfo());
+  timer.resetTimer();
+  timer.startTimer();
 };
 
-const movePokemons = () => {
-  const pokemonsToMove = lib.generateRandomNumbers(0, 48, 35);
-  pokemonsToMove.map(nr => {
-    (<view.MovingPokemon>DOM.getBoardSection().childNodes[nr]).toggleFrame();
-  });
+const movePokemonsTick = (secs: number) => {
+  const totalPlayedPokemons = state.score!.catch + state.score!.flee;
+  if (totalPlayedPokemons === 49) {
+    gameOver(secs);
+    return;
+  }
+  if (secs > 0) {
+    const pokemonsToMove = lib.generateRandomNumbers(0, 48, 35);
+    pokemonsToMove.map(nr => {
+      (<view.MovingPokemon>(
+        DOM.getBoardContainer().childNodes[nr]
+      )).toggleFrame();
+    });
+  }
 };
 
 const selectPokemonOnBoard = (pokemon: view.MovingPokemon) => {
@@ -128,10 +136,10 @@ const selectPokemonOnBoard = (pokemon: view.MovingPokemon) => {
   );
   pokemonsToChose = lib.shuffle(pokemonsToChose);
   const namedPokemons = pokemonsToChose.map(nr => state.pokemonNames[nr]);
-  lib.cleanChildElements(DOM.getPlaySection());
+  lib.cleanChildElements(DOM.getPlayContainer());
   const playArea = new view.PlayArea(pokemon.number, namedPokemons);
   playArea.onClickObservable.subscribe(handleGuess);
-  DOM.getPlaySection().appendChild(playArea);
+  DOM.getPlayContainer().appendChild(playArea);
 };
 
 const handleGuess = (guess: string) => {
@@ -146,4 +154,14 @@ const handleGuess = (guess: string) => {
     state.score!.flee++;
     DOM.getScore().flee = state.score!.flee;
   }
+};
+
+const gameOver = (timeLeft: number) => {
+  lib.cleanChildElements(DOM.getPlayContainer());
+  DOM.getBoardSection().removeChild(DOM.getBoardContainer());
+  state.score!.timeLeft = timeLeft;
+  state.highScores.push(state.score!);
+  const highScores = new HighScores(state.highScores);
+  DOM.getInfo().appendChild(highScores);
+  DOM.getPlayButton().show();
 };

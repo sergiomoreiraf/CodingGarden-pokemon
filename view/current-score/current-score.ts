@@ -1,4 +1,5 @@
 import { CustomWebComponent } from '../custom-webcomp';
+import { cleanChildElements } from '../../src/lib';
 
 export class CurrentScore extends CustomWebComponent {
   static get observedAttributes() {
@@ -8,20 +9,22 @@ export class CurrentScore extends CustomWebComponent {
     super('current-score');
   }
   set catch(num: number) {
-    this.setAttribute('catch', num > 0 ? '' + num : '');
+    this.setAttribute('catch', '' + num);
   }
   set flee(num: number) {
-    this.setAttribute('flee', num > 0 ? '' + num : '');
+    this.setAttribute('flee', '' + num);
   }
   attributeChangedCallback(attrName: string, oldVal: any, newVal: any) {
-    const span = this.querySelector('.' + attrName)!;
-    if (newVal === '') {
-      span.childNodes[0].textContent = newVal;
+    const span = <HTMLSpanElement>this.querySelector('.' + attrName)!;
+    if (newVal === '0') {
+      span.hidden = true;
+      cleanChildElements(span);
       return;
     }
+    span.hidden = false;
     const innerSpan = document.createElement('span');
     innerSpan.textContent = newVal;
-    span.textContent = attrName === 'catch' ? 'Catch:' : 'Flee:';
+    span.textContent = attrName === 'catch' ? 'CATCH:' : 'FLEE:';
     span.appendChild(innerSpan);
   }
 }

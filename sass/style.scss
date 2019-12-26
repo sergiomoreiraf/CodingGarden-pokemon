@@ -1,10 +1,9 @@
-$body-color: white;
+$body-color: whitesmoke;
 $background-color: rgb(32, 32, 32);
 $board-color: whitesmoke;
 $catch-color: forestgreen;
 $flee-color: orangered;
 
-/* Reset */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -13,7 +12,7 @@ $flee-color: orangered;
 
 body {
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   color: $body-color;
   background-color: $background-color;
   font-size: calc(12px + 0.5vw);
@@ -27,33 +26,58 @@ h2 {
   padding: 10px 4px;
 }
 
+button {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  border: 2px solid $board-color;
+  background-color: $background-color;
+  color: $board-color;
+  margin: 4px;
+  padding: 6px 12px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  &:hover {
+    transform: scale(1.2);
+  }
+  &:before {
+    content: '';
+    float: left;
+    height: 20px;
+    width: 20px;
+    background-size: contain;
+    background-image: url('../assets/items/poke-ball.png');
+    background-repeat: no-repeat;
+  }
+}
+
 #container {
   display: grid;
   height: 100%;
   grid-template-columns: auto;
-  grid-template-rows: 80px 1fr 40px 120px 40px;
+  grid-template-rows: 80px 1fr 120px 40px;
   grid-template-areas:
     'header'
     'board'
-    'score'
     'play'
     'footer';
   justify-items: center;
   align-items: center;
-
   header {
     grid-area: header;
   }
   #board {
     grid-area: board;
-    display: grid;
-    grid-template-columns: repeat(7, 42px);
-    grid-template-rows: repeat(7, 42px);
-    gap: 1px;
-  }
-  #score {
-    align-self: start;
-    grid-area: score;
+
+    #board-container {
+      margin: 0 auto;
+      width: fit-content;
+      display: grid;
+      grid-template-columns: repeat(7, 42px);
+      grid-template-rows: repeat(7, 42px);
+      gap: 1px;
+    }
   }
   #play {
     grid-area: play;
@@ -63,6 +87,7 @@ h2 {
   }
 }
 
+// idea from https://animista.net/
 @keyframes pokemon-catch {
   from {
     transform: scale(1);
@@ -89,6 +114,7 @@ h2 {
     transform: scale(0);
   }
 }
+// idea from https://animista.net/
 @keyframes pokemon-hide {
   0%,
   100% {
@@ -143,10 +169,36 @@ moving-pokemon {
   }
 }
 
+#info {
+  padding: 10px;
+}
+
+my-intro {
+  line-height: 200%;
+  padding: 20px;
+  p {
+    margin: 10px;
+  }
+  blockquote {
+    padding-left: 20%;
+  }
+  img {
+    width: 25vw;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+  }
+}
+
 current-score {
   font-family: 'Lato', sans-serif;
+  display: flex;
+  justify-content: space-evenly;
+  width: 80vw;
   .catch {
-    padding: 4px;
+    padding: 4px 10px 4px 10px;
+    border-bottom: 1px solid $catch-color;
     span {
       margin: 4px;
       font-weight: bold;
@@ -154,7 +206,8 @@ current-score {
     }
   }
   .flee {
-    padding: 4px;
+    padding: 4px 10px 4px 10px;
+    border-bottom: 1px solid $flee-color;
     span {
       margin: 4px;
       font-weight: bold;
@@ -177,7 +230,6 @@ counter-clock {
     opacity: 1;
   }
 }
-
 play-area {
   display: grid;
   width: 99vw;
@@ -212,10 +264,10 @@ play-area {
         width: 46%;
         list-style: none;
         margin: 2px;
-        animation: fade-in-left 0.6s linear both;
+        animation: fade-in-left 0.4s linear both;
         @for $x from 1 through 6 {
           &:nth-child(#{$x}) {
-            animation-delay: ($x * 0.1s);
+            animation-delay: ($x * 0.05s);
           }
         }
         span {
@@ -246,5 +298,33 @@ play-area {
         }
       }
     }
+  }
+}
+
+high-scores {
+  table,
+  th,
+  td {
+    border-bottom: 1px solid $board-color;
+    border-right: 1px dotted $board-color;
+  }
+  th {
+    padding: 8px;
+    font-size: 110%;
+  }
+  td {
+    padding: 4px;
+    &:nth-of-type(2) {
+      color: $catch-color;
+    }
+    &:nth-of-type(3) {
+      color: $flee-color;
+    }
+  }
+  table {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    vertical-align: center;
   }
 }

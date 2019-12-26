@@ -2,7 +2,7 @@ import { Observable } from './lib';
 
 let handler: NodeJS.Timeout | null;
 
-let timer = 60;
+let timer = 90;
 
 /**
  * Holds observers to get notified when times ticks every sec
@@ -10,7 +10,7 @@ let timer = 60;
 export const timerObservable = new Observable<number>();
 
 export function resetTimer() {
-  timer = 60;
+  timer = 90;
 }
 
 export function startTimer() {
@@ -21,10 +21,10 @@ export function startTimer() {
 
 function timerTick() {
   timer--;
-  timerObservable.notify(timer);
   if (timer <= 0) {
     pauseTimer();
   }
+  timerObservable.notify(timer);
 }
 
 export function pauseTimer() {

@@ -20,13 +20,16 @@
       <header>
         <h1>Gotta catch 'em all!</h1>
       </header>
-      <section id="board"></section>
-      <section id="score">
+      <section id="board">
+        <div id="info"><my-intro></my-intro></div>
         <current-score></current-score>
       </section>
-      <section id="play"></section>
+      <section id="play">
+        <play-button></play-button>
+        <div id="play-container"></div>
+      </section>
       <footer>
-        <counter-clock></counter-clock> <play-button></play-button>
+        <counter-clock></counter-clock>
       </footer>
     </div>
     ${require('./view/moving-pokemon/moving-pokemon.html')}
@@ -34,5 +37,7 @@
     ${require('./view/play-button/play-button.html')}
     ${require('./view/play-area/play-area.html')}
     ${require('./view/current-score/current-score.html')}
+    ${require('./view/high-scores/high-scores.html')}
+    ${require('./view/my-intro/my-intro.html')}
   </body>
 </html>
