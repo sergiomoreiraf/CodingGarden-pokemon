@@ -14,10 +14,15 @@ export class HighScores extends CustomWebComponent {
 
   protected postConstruct(): void {
     this.highScores.map(score => {
-      score.timeLeft = score.timeLeft || 0;
-      score.points = score.catch - score.flee + score.timeLeft;
+      let timeLeft = score.timeLeft || 0;
+      if (timeLeft > 10) {
+        timeLeft = 10;
+      }
+      score.points = score.catch - score.flee + timeLeft;
     });
     this.highScores.sort((a, b) => b.points! - a.points!);
+    let toShow = 8;
+    this.highScores = this.highScores.filter(() => toShow-- > 0);
     const tbody = this.getElementsByTagName('tbody')[0]!;
     this.highScores.map(score => {
       const td1 = document.createElement('td');

@@ -2,15 +2,12 @@ import { Observable } from './lib';
 
 let handler: NodeJS.Timeout | null;
 
-let timer = 90;
+let timer = 0;
 
-/**
- * Holds observers to get notified when times ticks every sec
- */
 export const timerObservable = new Observable<number>();
 
-export function resetTimer() {
-  timer = 90;
+export function resetTimer(time: number) {
+  timer = time;
 }
 
 export function startTimer() {

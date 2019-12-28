@@ -22,7 +22,7 @@ const state: typeState = {
 };
 
 const config = {
-  // api endpoint that provides the pokemon names
+  // api endpoint that provides the pokemon names. if it changes, see 'sanitize config' on init().
   url: `https://pokeapi.co/api/v2/pokemon/?limit=492`,
   // numbers of pokemons to play with. Must match 'limit' on url query. For easy games, try a lower size (ex:100)
   size: 492
@@ -35,6 +35,7 @@ const DOM = {
   getPlayContainer: () => document.getElementById('play-container')!,
   getScore: () =>
     <view.CurrentScore>document.getElementsByTagName('current-score')[0],
+  getMyIntro: () => <view.MyIntro>document.getElementsByTagName('my-intro')[0],
   getPlayButton: () =>
     <view.PlayButton>document.getElementsByTagName('play-button')[0],
   getCounterClock: () =>
@@ -58,11 +59,11 @@ const init = async () => {
   // sanitize config
   const urlSize = +config.url.split('=')[1];
   if (urlSize !== config.size) {
-    error(
-      new Error(
-        'Config error: config.size does not equals limit param on config.url'
-      )
-    );
+    error(new Error('config.size does not equals limit param on config.url'));
+    return;
+  }
+  if (config.size > 492 || config.size < 49) {
+    error(new Error('config.size must be between 49 - 492'));
     return;
   }
   // fetch all pokemon names from pokeApi
@@ -80,6 +81,7 @@ const init = async () => {
       error(err);
       return;
     });
+  DOM.getMyIntro().onClickObservable.subscribe(showHighScores);
   DOM.getPlayButton().onClickObservable.subscribe(startGame);
   timer.timerObservable.subscribe(secs => {
     DOM.getCounterClock().counter = secs;
@@ -88,6 +90,10 @@ const init = async () => {
     }
   });
   timer.timerObservable.subscribe(movePokemonsTick);
+  const highScores = localStorage.getItem('scores');
+  if (highScores) {
+    state.highScores = JSON.parse(highScores);
+  }
 };
 lib.onLoadDocument(init);
 
@@ -107,7 +113,7 @@ const startGame = () => {
     boardContainer.appendChild(pokemon);
   }
   DOM.getBoardSection().insertBefore(boardContainer, DOM.getInfo());
-  timer.resetTimer();
+  timer.resetTimer(200);
   timer.startTimer();
   DOM.getCounterClock().initCountdown();
 };
@@ -115,6 +121,7 @@ const startGame = () => {
 const movePokemonsTick = (secs: number) => {
   const totalPlayedPokemons = state.score!.catch + state.score!.flee;
   if (totalPlayedPokemons === 49) {
+    timer.pauseTimer();
     gameOver(secs);
     return;
   }
@@ -162,10 +169,18 @@ const handleGuess = (guess: string) => {
 };
 
 const gameOver = (timeLeft: number) => {
-  lib.cleanChildElements(DOM.getPlayContainer());
-  DOM.getBoardSection().removeChild(DOM.getBoardContainer());
   state.score!.timeLeft = timeLeft;
   state.highScores.push(state.score!);
+  localStorage.setItem('scores', JSON.stringify(state.highScores));
+  showHighScores();
+};
+
+const showHighScores = () => {
+  lib.cleanChildElements(DOM.getInfo());
+  lib.cleanChildElements(DOM.getPlayContainer());
+  if (DOM.getBoardContainer()) {
+    DOM.getBoardSection().removeChild(DOM.getBoardContainer());
+  }
   const highScores = new view.HighScores(state.highScores);
   DOM.getInfo().appendChild(highScores);
   DOM.getPlayButton().show();

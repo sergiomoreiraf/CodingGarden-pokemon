@@ -16,7 +16,7 @@ $numeric-font: 'Orbitron', sans-serif;
 
 body {
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   color: $body-color;
   background-color: $background-color;
   font-size: calc(12px + 0.5vw);
@@ -28,6 +28,7 @@ a {
   color: inherit;
   text-decoration: inherit;
   border-bottom: 1px solid $body-color;
+  cursor: pointer;
 }
 
 h1,
@@ -47,7 +48,7 @@ button {
   padding: 6px 12px;
   text-decoration: none;
   text-transform: uppercase;
-  transition: all 0.2s;
+  transition: transform 0.2s;
   &:hover {
     transform: scale(1.2);
   }
@@ -241,7 +242,7 @@ counter-clock {
       font-family: $numeric-font;
       color: $catch-color;
       &.countdown {
-        animation: color-change 90s linear;
+        animation: color-change 200s linear;
       }
     }
   }
@@ -265,7 +266,6 @@ play-area {
     padding: 8px;
     justify-self: center;
     align-self: end;
-    transition: 0.5s;
     img {
       width: 100px;
       height: 100px;
@@ -273,7 +273,6 @@ play-area {
       filter: brightness(0) drop-shadow(0 0 0.7rem gold);
     }
     &.reveal {
-      background-color: $background-color;
       img {
         filter: brightness(1) drop-shadow(0 0 0.2rem white);
       }
