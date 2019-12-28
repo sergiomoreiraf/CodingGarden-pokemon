@@ -5,6 +5,8 @@ type SubscriberFn<T> = (data: T) => void | (() => void);
 
 /**
  * A typescript implementation of Observer Pattern.
+ *
+ * Javascript has a better even manipulation called EventEmitter, but for the sake of simplicity, I opt for Observer Pattern.
  */
 export class Observable<T> {
   private subscribers: SubscriberFn<T>[] = [];

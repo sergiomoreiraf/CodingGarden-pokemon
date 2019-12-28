@@ -2,7 +2,7 @@
 
 After years of coding, CJ decided to abandon everything and start following his dream: to become the best Pokemon trainer ever!
 
-60 secs. This is all the time you have to click on moving Pokemons and name it correctly. If you success, CJ will catch this Pokemon. If you fail, no candy for you.
+200 secs. This is all the time you have to click on moving Pokemons and name it correctly. If you success, CJ will catch this Pokemon. If you fail, no candy for you.
 
 ## What is your motivation for creating this project?
 
@@ -28,10 +28,8 @@ What is being added:
 - Build process with [Webpack](https://webpack.js.org/) to transpile [Typescript](https://www.typescriptlang.org/) code.
   - This must provide both build process and live transpile on change detection.
 - Semantic HTML
-  - HTML, as a markup language, is semantic in nature. That means every tag has it's motive in mind.
-  - Sadly, with the naive use of popular CSS frameworks, we move from table hell to div hell.
+  - HTML, as a markup language, is semantic in nature. That means every tag has it's goal.
 - [Sass](https://sass-lang.com/).
-  - Included during the build process.
   - Sass give us the ability to use nested rules, mixins, functions and much more.
 - Sprite images.
   - Sprite with Sass is soo good! :)
@@ -46,7 +44,6 @@ What is being added:
   - /sass for styling.
   - /src for main Typescript code.
   - /src/lib for shared Typescript code.
-    - Consider a separate repo for your libs and import it, or go with a [monolithic approach](https://en.wikipedia.org/wiki/Monorepo).
   - /view for web components
     - Every web component has it's own folder. On there, there is the html file and .ts file.
 - Tests with Jest.
@@ -56,16 +53,16 @@ What is being added:
   - Unless on very specific cases, this is a must for every project nowadays.
 - WebComponents (with Typescript!)
   - Web Component is somehow a way to let us extends the HTML elements to create new custom and reusable HTML.
-  - Separation of concern between presentation (remote fetched template) and controller (with a custom solution to build web components).
-  - No shadow CSS was used (yet).
+  - Separation of concern between presentation (template) and controller.
+  - No shadow CSS was used.
 - [SPA](https://en.wikipedia.org/wiki/Single-page_application).
 - Observer Pattern to share state.
   - This means that the state is shared between subscription as such on Observer Pattern. For example, whatever component/class that has a shareable state provides a subscription so others can be notified on this state change.
 - Mix between an OO approach and functional programming.
+- UI animation.
 
 What I may add:
 
-- UI animation (will try without adding a lib).
 - PWA.
 
 ## What will be your process?

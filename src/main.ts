@@ -51,6 +51,7 @@ const error = (err: any) => {
   console.error(err);
   lib.cleanChildElements(DOM.getPlayArea());
   lib.cleanChildElements(DOM.getInfo());
+  DOM.getPlayButton().hidden = true;
   DOM.getInfo().appendChild(new view.SleepPokemon());
 };
 
