@@ -84,6 +84,7 @@ button {
     #board-container {
       margin: 0 auto;
       width: fit-content;
+      width: -moz-fit-content;
       display: grid;
       grid-template-columns: repeat(7, 42px);
       grid-template-rows: repeat(7, 42px);
