@@ -2,6 +2,8 @@
 
 ![Dancing Pokemons - Pic from a early release](assets/pokemon-app.gif).
 
+Deployed at: [https://catch-pokemon-a9cd6.web.app/](https://catch-pokemon-a9cd6.web.app/)
+
 [Coding Garden](https://www.youtube.com/channel/UCLNgu_OupwoeESgtab33CCw) is a youtube channel that teaches people on how to code with JavaScript. The host of this channel is a nice guy know as CJ.
 
 One day, on a live stream, he gave a challenge to his subscribers: build a simple website that fetch some data from a public API that followed [some rules](https://github.com/CodingGarden/seedling-school-01-frontend-project).
