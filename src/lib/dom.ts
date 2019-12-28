@@ -3,6 +3,9 @@ export function onLoadDocument(fn: () => void) {
 }
 
 export function cleanChildElements(elm: HTMLElement) {
+  if (!elm) {
+    return;
+  }
   while (elm.firstChild) {
     elm.removeChild(elm.firstChild!);
   }

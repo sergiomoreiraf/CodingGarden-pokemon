@@ -78,6 +78,7 @@ button {
     grid-area: header;
   }
   #board {
+    height: 100%;
     grid-area: board;
     #board-container {
       margin: 0 auto;
@@ -353,5 +354,14 @@ high-scores {
     width: 100%;
     text-align: center;
     vertical-align: center;
+  }
+}
+
+sleep-pokemon {
+  line-height: 200%;
+  padding: 20px;
+  img {
+    width: 50%;
+    float: right;
   }
 }

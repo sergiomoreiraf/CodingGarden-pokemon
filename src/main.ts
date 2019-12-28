@@ -12,26 +12,19 @@ type typeState = {
   pokemonNames: { [key: number]: string };
   movingPokemons: view.MovingPokemon[];
   selectedPokemon?: view.MovingPokemon;
-  error: {
-    hasError: boolean;
-    cause?: string;
-  };
   score?: view.typeScore;
   highScores: view.typeScore[];
 };
 const state: typeState = {
   pokemonNames: {},
   movingPokemons: [],
-  highScores: [],
-  error: {
-    hasError: false
-  }
+  highScores: []
 };
 
 const config = {
   // api endpoint that provides the pokemon names
   url: `https://pokeapi.co/api/v2/pokemon/?limit=492`,
-  // numbers of pokemons to play with. Must match 'limit' on url query
+  // numbers of pokemons to play with. Must match 'limit' on url query. For easy games, try a lower size (ex:100)
   size: 492
 };
 
@@ -55,11 +48,23 @@ const DOM = {
  */
 const error = (err: any) => {
   console.error(err);
-  state.error.hasError = true;
+  lib.cleanChildElements(DOM.getPlayArea());
+  lib.cleanChildElements(DOM.getInfo());
+  DOM.getInfo().appendChild(new view.SleepPokemon());
 };
 
 // What happens when the app loads
 const init = async () => {
+  // sanitize config
+  const urlSize = +config.url.split('=')[1];
+  if (urlSize !== config.size) {
+    error(
+      new Error(
+        'Config error: config.size does not equals limit param on config.url'
+      )
+    );
+    return;
+  }
   // fetch all pokemon names from pokeApi
   await fetch(config.url)
     .then(res => res.json())
