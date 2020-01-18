@@ -65,7 +65,7 @@ button {
 
 #container {
   display: grid;
-  height: 100%;
+  height: 99vh;
   grid-template-columns: auto;
   grid-template-rows: 80px 1fr 120px 40px;
   grid-template-areas:
@@ -81,6 +81,9 @@ button {
   #board {
     height: 100%;
     grid-area: board;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     #board-container {
       margin: 0 auto;
       width: fit-content;
