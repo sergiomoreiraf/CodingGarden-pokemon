@@ -8,11 +8,11 @@ module.exports = {
       {
         test: /\.ts$/,
         use: 'ts-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.s[ac]ss$/i,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(png|jpg|svg|gif)$/,
@@ -21,32 +21,32 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[path][name].[ext]',
-              esModule: false
-            }
-          }
-        ]
+              esModule: false,
+            },
+          },
+        ],
       },
       {
         test: /\.html$/,
         use: [
           {
-            loader: 'html-loader'
-          }
-        ]
-      }
-    ]
+            loader: 'html-loader',
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: 'index.ejs'
-    })
+      template: 'index.ejs',
+    }),
   ],
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
   },
   output: {
     filename: 'main.js',
-    path: __dirname + '/dist'
-  }
+    path: __dirname + '/dist',
+  },
 };

@@ -14,7 +14,7 @@ import {
   PlayArea,
   CurrentScore,
   HighScores,
-  MyIntro
+  MyIntro,
 } from './';
 import { SleepPokemon } from './sleep-pokemon/sleep-pokemon';
 

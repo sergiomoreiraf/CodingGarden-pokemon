@@ -18,14 +18,14 @@ type typeState = {
 const state: typeState = {
   pokemonNames: {},
   movingPokemons: [],
-  highScores: []
+  highScores: [],
 };
 
 const config = {
   // api endpoint that provides the pokemon names. if it changes, see 'sanitize config' on init().
   url: `https://pokeapi.co/api/v2/pokemon/?limit=492`,
   // numbers of pokemons to play with. Must match 'limit' on url query. For easy games, try a lower size (ex:100)
-  size: 492
+  size: 492,
 };
 
 const DOM = {
@@ -41,7 +41,7 @@ const DOM = {
   getCounterClock: () =>
     <view.CounterClock>document.getElementsByTagName('counter-clock')[0],
   getPlayArea: () =>
-    <view.PlayArea>document.getElementsByTagName('play-area')[0]
+    <view.PlayArea>document.getElementsByTagName('play-area')[0],
 };
 
 /**
@@ -69,8 +69,8 @@ const init = async () => {
   }
   // fetch all pokemon names from pokeApi
   await fetch(config.url)
-    .then(res => res.json())
-    .then(data => {
+    .then((res) => res.json())
+    .then((data) => {
       data.results.map((pokemon: any) => {
         const _ = pokemon.url.split('/');
         _.pop();
@@ -78,13 +78,13 @@ const init = async () => {
         state.pokemonNames[id] = pokemon.name;
       });
     })
-    .catch(err => {
+    .catch((err) => {
       error(err);
       return;
     });
   DOM.getMyIntro().onClickObservable.subscribe(showHighScores);
   DOM.getPlayButton().onClickObservable.subscribe(startGame);
-  timer.timerObservable.subscribe(secs => {
+  timer.timerObservable.subscribe((secs) => {
     DOM.getCounterClock().counter = secs;
     if (secs === 0) {
       gameOver(0);
@@ -128,7 +128,7 @@ const movePokemonsTick = (secs: number) => {
   }
   if (secs > 0) {
     const pokemonsToMove = lib.generateRandomNumbers(0, 48, 35);
-    pokemonsToMove.map(nr => {
+    pokemonsToMove.map((nr) => {
       (<view.MovingPokemon>(
         DOM.getBoardContainer().childNodes[nr]
       )).toggleFrame();
@@ -148,7 +148,7 @@ const selectPokemonOnBoard = (pokemon: view.MovingPokemon) => {
     initPokeToChose
   );
   pokemonsToChose = lib.shuffle(pokemonsToChose);
-  const namedPokemons = pokemonsToChose.map(nr => state.pokemonNames[nr]);
+  const namedPokemons = pokemonsToChose.map((nr) => state.pokemonNames[nr]);
   lib.cleanChildElements(DOM.getPlayContainer());
   const playArea = new view.PlayArea(pokemon.number, namedPokemons);
   playArea.onClickObservable.subscribe(handleGuess);

@@ -11,7 +11,7 @@ export class PlayArea extends CustomWebComponent {
     const src = `https://raw.githubusercontent.com/sergiomoreiraf/CodingGarden-pokemon/master/assets/large/${this.nr}.svg?sanitize=true`;
     this.getElementsByTagName('img')[0].src = src;
     const ul = this.getElementsByTagName('ul')[0];
-    this.names.map(name => {
+    this.names.map((name) => {
       const span = document.createElement('span');
       span.textContent = name;
       span.classList.add('link');
@@ -24,7 +24,7 @@ export class PlayArea extends CustomWebComponent {
 
   protected preDestroy(): void {
     const ul = this.getElementsByTagName('ul')[0];
-    ul.childNodes.forEach(node =>
+    ul.childNodes.forEach((node) =>
       node.firstChild!.removeEventListener('click', this.onClick)
     );
   }
@@ -42,7 +42,7 @@ export class PlayArea extends CustomWebComponent {
   highlight(choice: string, answer: string) {
     this.querySelector('#photo')!.classList.add('reveal');
     const isCorrect = choice === answer;
-    this.querySelectorAll('li').forEach(li => {
+    this.querySelectorAll('li').forEach((li) => {
       const span = li.getElementsByTagName('span')[0];
       span.classList.remove('link');
       span.removeEventListener('click', this.onClick);

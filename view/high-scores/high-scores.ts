@@ -13,7 +13,7 @@ export class HighScores extends CustomWebComponent {
   }
 
   protected postConstruct(): void {
-    this.highScores.map(score => {
+    this.highScores.map((score) => {
       let timeLeft = score.timeLeft || 0;
       if (timeLeft > 10) {
         timeLeft = 10;
@@ -24,7 +24,7 @@ export class HighScores extends CustomWebComponent {
     let toShow = 8;
     this.highScores = this.highScores.filter(() => toShow-- > 0);
     const tbody = this.getElementsByTagName('tbody')[0]!;
-    this.highScores.map(score => {
+    this.highScores.map((score) => {
       const td1 = document.createElement('td');
       td1.textContent = '' + score.points;
       const td2 = document.createElement('td');

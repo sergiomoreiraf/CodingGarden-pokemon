@@ -15,7 +15,7 @@ export function generateRandomNumbers(
   let ret: number[];
 
   if (howMany + init.length <= (to - from) / 2) {
-    init.map(x => set.add(x));
+    init.map((x) => set.add(x));
     while (set.size < howMany) {
       const random = Math.floor(Math.random() * (to - from + 1)) + from;
       set.add(random);
@@ -27,7 +27,7 @@ export function generateRandomNumbers(
     }
     while (set.size > howMany) {
       const random = Math.floor(Math.random() * (to - from + 1)) + from;
-      if (init.filter(x => x === random).length === 0) set.delete(random);
+      if (init.filter((x) => x === random).length === 0) set.delete(random);
     }
     ret = [...set];
   }

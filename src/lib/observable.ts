@@ -16,7 +16,9 @@ export class Observable<T> {
   }
 
   unsubscribe(s: SubscriberFn<T>) {
-    this.subscribers = this.subscribers.filter(subscriber => subscriber !== s);
+    this.subscribers = this.subscribers.filter(
+      (subscriber) => subscriber !== s
+    );
   }
 
   unsubscribeAll() {
@@ -24,6 +26,6 @@ export class Observable<T> {
   }
 
   notify(data: T) {
-    this.subscribers.forEach(subscriber => subscriber(data));
+    this.subscribers.forEach((subscriber) => subscriber(data));
   }
 }
