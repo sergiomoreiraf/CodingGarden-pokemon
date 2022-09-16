@@ -15,5 +15,14 @@
   "prettier.tabWidth": 2,
   "javascript.preferences.quoteStyle": "single",
   "typescript.preferences.quoteStyle": "single",
-  "liveServer.settings.root": "/dist/web"
+  "liveServer.settings.root": "/dist/web",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": false
+  }
 }
